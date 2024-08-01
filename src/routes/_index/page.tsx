@@ -1,5 +1,6 @@
 import { trpcClient } from "@/lib/trpc";
 import { useTypedLoaderData } from "@/lib/utils";
+import { EmptyProjects } from "./emptyProjects";
 
 export async function loader() {
   console.log("Loading...");
@@ -13,7 +14,11 @@ export async function loader() {
 export default function Index() {
   const { projects } = useTypedLoaderData<typeof loader>();
 
-  return <pre>{JSON.stringify(projects, null, 2)}</pre>;
+  if (projects.length === 0) {
+    return <EmptyProjects />;
+  }
+
+  return null;
 }
 
 export async function action() {
