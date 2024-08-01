@@ -1,21 +1,17 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { trpcClient } from "@/lib/trpc";
+import { createHashRouter, RouterProvider } from "react-router-dom";
 
-const ReactRouter = createBrowserRouter([
+import RootIndexPage, {
+  loader as rootIndexLoader,
+  action as rootIndexAction,
+} from "./routes/_index/page";
+
+const ReactRouter = createHashRouter([
   {
     path: "/",
     index: true,
-    element: <h1>Hello World</h1>,
-    loader: async () => {
-      console.log("Loading...");
-      const result = await trpcClient.projects.list.query({
-        name: "Nivekithan",
-      });
-
-      console.log(result);
-
-      return null;
-    },
+    element: <RootIndexPage />,
+    loader: rootIndexLoader,
+    action: rootIndexAction,
   },
 ]);
 
