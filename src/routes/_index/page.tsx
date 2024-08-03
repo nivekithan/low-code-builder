@@ -1,7 +1,7 @@
 import { trpcClient } from "@/lib/trpc";
 import { useTypedLoaderData } from "@/lib/utils";
 import { EmptyProjects } from "./emptyProjects";
-import { ActionFunctionArgs } from "react-router-dom";
+import { ActionFunctionArgs, redirect } from "react-router-dom";
 import { parseWithZod } from "@conform-to/zod";
 import { z } from "zod";
 import { FORM_ACTIONS } from "./constant";
@@ -48,7 +48,8 @@ export async function action({ request }: ActionFunctionArgs) {
         name: data.name,
         path: data.directory,
       });
-      return result;
+
+      return redirect(`/projects/${result.id}`);
     }
   }
   return null;

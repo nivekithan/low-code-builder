@@ -3,17 +3,10 @@ import { CodeFile, CodeGenProject } from "../codegen";
 import TOML from "smol-toml";
 
 export function generateBaseProject(name: string) {
-  const indexJsFile = createIndexJsFile();
-  const rootJsFile = createRootHandlerFile();
   const packageJson = createPackageJsonFile(name);
   const wranglerToml = createWranglerTomlFile(name);
 
-  const baseProject = new CodeGenProject([
-    indexJsFile,
-    rootJsFile,
-    packageJson,
-    wranglerToml,
-  ]);
+  const baseProject = new CodeGenProject([packageJson, wranglerToml]);
 
   baseProject.log();
 
@@ -33,6 +26,7 @@ export function generateBaseProject(name: string) {
  * export default app
  * ```
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function createIndexJsFile() {
   const root = ts.factory.createSourceFile(
     [
