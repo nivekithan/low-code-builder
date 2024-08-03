@@ -1,0 +1,14 @@
+{
+  "name": "template-base-project",
+  "scripts": {
+    "dev": "wrangler dev src/index.ts",
+    "deploy": "wrangler deploy --minify src/index.js"
+  },
+  "dependencies": {
+    "hono": "^4.5.3"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240529.0",
+    "wrangler": "^3.57.2"
+  }
+}

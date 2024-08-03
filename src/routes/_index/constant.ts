@@ -1,0 +1,3 @@
+export const FORM_ACTIONS = {
+  CREATE_NEW_PROJECT: "CREATE_NEW_PROJECT",
+};

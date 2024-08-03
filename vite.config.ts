@@ -14,9 +14,10 @@ export default defineConfig({
         // Shortcut of `build.lib.entry`.
         entry: "electron/main.ts",
         vite: {
+          plugins: [tsconfigPaths()],
           build: {
             rollupOptions: {
-              external: ["better-sqlite3"],
+              external: ["better-sqlite3", "typescript"],
             },
           },
         },
@@ -33,7 +34,7 @@ export default defineConfig({
       renderer:
         process.env.NODE_ENV === "test"
           ? // https://github.com/electron-vite/vite-plugin-electron-renderer/issues/78#issuecomment-2053600808
-          undefined
+            undefined
           : {},
     }),
   ],
