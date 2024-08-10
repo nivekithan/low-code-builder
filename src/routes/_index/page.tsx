@@ -5,12 +5,10 @@ import { ActionFunctionArgs, redirect } from "react-router-dom";
 import { parseWithZod } from "@conform-to/zod";
 import { z } from "zod";
 import { FORM_ACTIONS } from "./constant";
+import { ProjectList } from "./projectList";
 
 export async function loader() {
-  console.log("Loading...");
   const result = await trpcClient.projects.list.query();
-
-  console.log(result);
 
   return { projects: result };
 }
@@ -22,7 +20,11 @@ export default function Index() {
     return <EmptyProjects />;
   }
 
-  return null;
+  return (
+    <div className="p-4">
+      <ProjectList projectLists={projects} />
+    </div>
+  );
 }
 
 const CreateProjectSchema = z.object({

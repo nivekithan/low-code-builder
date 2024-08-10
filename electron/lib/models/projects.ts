@@ -39,3 +39,5 @@ export async function getProject(projectId: number) {
 
   return project[0];
 }
+
+export type ProjectLists = Awaited<ReturnType<typeof listProjects>>;
