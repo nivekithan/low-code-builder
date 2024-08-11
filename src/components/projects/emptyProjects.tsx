@@ -11,15 +11,44 @@ import { Label } from "@/components/ui/label";
 import { Field } from "@/components/ui/fieldset";
 import { SelectedDirectory, usePickDirectory } from "@/lib/directory";
 import { useId } from "react";
-import { Form } from "react-router-dom";
-import { FORM_ACTIONS } from "./constant";
+import { z } from "zod";
+import { useForm, UseFormRegister } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { trpc } from "@/lib/trpc";
+import { useNavigate } from "@tanstack/react-router";
+
+const CreateProjectSchema = z.object({
+  name: z.string(),
+  directory: z.string(),
+});
+
+type CreateProjectSchemaType = z.infer<typeof CreateProjectSchema>;
 
 export function EmptyProjects() {
   const nameFieldId = useId();
-
   const [selectedDirectory, promptToSelectDirectory] = usePickDirectory(
     "Select a directory to create your project"
   );
+  const { register, handleSubmit } = useForm<CreateProjectSchemaType>({
+    resolver: zodResolver(CreateProjectSchema),
+  });
+
+  const navigate = useNavigate();
+  const trpcUtils = trpc.useUtils();
+
+  const createProjectMutation = trpc.projects.create.useMutation({
+    onSuccess(data) {
+      trpcUtils.projects.invalidate();
+      navigate({ to: `/projects/${data.id}` });
+    },
+  });
+
+  const onCreateNewProject = handleSubmit(async (data) => {
+    await createProjectMutation.mutate({
+      name: data.name,
+      path: data.directory,
+    });
+  });
 
   return (
     <div className="min-h-screen grid place-items-center">
@@ -31,28 +60,25 @@ export function EmptyProjects() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Form method="POST" className="flex flex-col gap-y-4">
+          <form onSubmit={onCreateNewProject} className="flex flex-col gap-y-4">
             <Field>
               <Label htmlFor={nameFieldId}>Name:</Label>
-              <Input type="text" name="name" id={nameFieldId} required />
+              <Input type="text" id={nameFieldId} {...register("name")} />
             </Field>
             <Field>
               <Label>Directory:</Label>
               <DirectorySelection
                 selectedDirectory={selectedDirectory}
                 promptToSelectDirectory={promptToSelectDirectory}
+                register={register}
               />
             </Field>
             {selectedDirectory ? (
-              <Button
-                type="submit"
-                name="action"
-                value={FORM_ACTIONS.CREATE_NEW_PROJECT}
-              >
+              <Button type="submit" disabled={createProjectMutation.isLoading}>
                 Confirm
               </Button>
             ) : null}
-          </Form>
+          </form>
         </CardContent>
       </Card>
     </div>
@@ -62,9 +88,11 @@ export function EmptyProjects() {
 function DirectorySelection({
   promptToSelectDirectory,
   selectedDirectory,
+  register,
 }: {
   selectedDirectory: SelectedDirectory;
   promptToSelectDirectory: () => void;
+  register: UseFormRegister<CreateProjectSchemaType>;
 }) {
   if (selectedDirectory === null) {
     return (
@@ -83,9 +111,9 @@ function DirectorySelection({
     <>
       <Input
         type="text"
-        name="directory"
         value={selectedDirectory.directory}
         readOnly
+        {...register("directory")}
       />
       <Button
         type="button"

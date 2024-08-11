@@ -1,15 +1,37 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { App } from "./App.tsx";
 import "./tailwind.css";
+import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import { RouterProvider, createRouter } from "@tanstack/react-router";
+import { queryClientProvider, trpc, trpcClientProvider } from "@/lib/trpc";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-);
+// Import the generated route tree
+import { routeTree } from "./routeTree.gen";
+import { QueryClientProvider } from "@tanstack/react-query";
 
-// Use contextBridge
-window.ipcRenderer.on("main-process-message", (_event, message) => {
-  console.log(message);
-});
+// Create a new router instance
+const router = createRouter({ routeTree });
+
+// Register the router instance for type safety
+declare module "@tanstack/react-router" {
+  interface Register {
+    router: typeof router;
+  }
+}
+
+// Render the app
+const rootElement = document.getElementById("root")!;
+if (!rootElement.innerHTML) {
+  const root = ReactDOM.createRoot(rootElement);
+  root.render(
+    <StrictMode>
+      <trpc.Provider
+        client={trpcClientProvider}
+        queryClient={queryClientProvider}
+      >
+        <QueryClientProvider client={queryClientProvider}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </trpc.Provider>
+    </StrictMode>
+  );
+}

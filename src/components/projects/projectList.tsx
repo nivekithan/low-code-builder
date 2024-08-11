@@ -1,6 +1,6 @@
 import { ProjectLists } from "!/lib/models/projects";
 import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 export function ProjectList({ projectLists }: { projectLists: ProjectLists }) {
   return (

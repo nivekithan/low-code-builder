@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { trpcClient } from "./trpc";
+import { vanilaTrpcClient } from "./trpc";
 
 export function usePickDirectory(message: string) {
   const [selectedDirectory, setSelectedDirectory] = useState<{
@@ -7,7 +7,7 @@ export function usePickDirectory(message: string) {
   } | null>(null);
 
   const chooseDirectory = useCallback(async () => {
-    const selectDirectory = await trpcClient._directory.open.mutate({
+    const selectDirectory = await vanilaTrpcClient._directory.open.mutate({
       message: message,
     });
 
