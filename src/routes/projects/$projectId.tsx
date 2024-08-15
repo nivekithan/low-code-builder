@@ -1,11 +1,22 @@
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/text";
+import { CustomNodes } from "@/customNodes";
 import { trpc } from "@/lib/trpc";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { Background, Controls, ReactFlow } from "@xyflow/react";
+import {
+  addEdge,
+  applyEdgeChanges,
+  applyNodeChanges,
+  Background,
+  Controls,
+  Edge,
+  OnConnect,
+  OnEdgesChange,
+  OnNodesChange,
+  ReactFlow,
+} from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useMemo } from "react";
-import useResizeObserver from "use-resize-observer";
+import { useCallback, useState } from "react";
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: Component,
@@ -31,31 +42,52 @@ function Component() {
   );
 }
 
-const DEFAULT_PADDING = 20;
-function getDefaultNodes(width: number) {
-  return [
-    {
-      id: "1", // required
-      position: { x: width / 2, y: DEFAULT_PADDING }, // required
-      data: { label: "Hello" }, // required
+const initialNodes: CustomNodes[] = [
+  {
+    id: "1", // required
+    type: "apiRequest",
+    position: { x: 0, y: 0 }, // required
+    data: {
+      method: "GET",
     },
-  ];
-}
+  },
+];
+
+const initialEdges: Edge[] = [
+  { id: "1-2", source: "1", target: "2", label: "to the", type: "step" },
+];
 
 function Editor() {
-  const { height, width, ref: editorRef } = useResizeObserver<HTMLDivElement>();
+  const [nodes, setNodes] = useState(initialNodes);
 
-  const nodes = useMemo(() => {
-    if (!height || !width) return [];
+  const [edges, setEdges] = useState(initialEdges);
 
-    return getDefaultNodes(width);
-  }, [height, width]);
+  const onNodesChange: OnNodesChange<CustomNodes> = useCallback(
+    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
+    []
+  );
+  const onEdgesChange: OnEdgesChange<Edge> = useCallback(
+    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
+    []
+  );
 
-  console.log({ height, width });
+  const onConnect: OnConnect = useCallback(
+    (params) => setEdges((eds) => addEdge(params, eds)),
+    []
+  );
 
   return (
     <div className="flex-1 p-4 min-h-screen">
-      <ReactFlow nodes={nodes} colorMode="dark" ref={editorRef}>
+      <ReactFlow
+        nodes={nodes}
+        colorMode="dark"
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        nodeTypes={CustomNodes}
+        fitView
+      >
         <Background />
         <Controls />
       </ReactFlow>
