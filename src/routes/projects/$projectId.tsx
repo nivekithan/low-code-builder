@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/text";
-import { CustomNodes } from "@/customNodes";
+import { CustomNodes, CustomNodeTypes } from "@/customNodes";
 import { trpc } from "@/lib/trpc";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
@@ -85,7 +85,7 @@ function Editor() {
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
-        nodeTypes={CustomNodes}
+        nodeTypes={CustomNodeTypes}
         fitView
       >
         <Background />
