@@ -9,10 +9,19 @@ export type NodeMeta = {
 export type ApiRequestNodeDef = {
   type: "apiRequest";
   data: {
-    method: string;
+    method: "GET" | "POST" | "PUT" | "DELETE";
   };
   meta: NodeMeta;
   next: NodesDef | null;
 };
 
-export type NodesDef = ApiRequestNodeDef;
+export type ApiResponseNodeDef = {
+  type: "apiResponse";
+  data: {
+    text: string;
+  };
+  meta: NodeMeta;
+  next: null;
+};
+
+export type NodesDef = ApiRequestNodeDef | ApiResponseNodeDef;

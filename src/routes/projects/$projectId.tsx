@@ -51,10 +51,16 @@ const initialNodes: CustomNodes[] = [
       method: "GET",
     },
   },
+  {
+    id: "2",
+    type: "apiResponse",
+    position: { x: 0, y: 450 },
+    data: { text: "Hello World!" },
+  },
 ];
 
 const initialEdges: Edge[] = [
-  { id: "1-2", source: "1", target: "2", label: "to the", type: "step" },
+  { id: "1-2", source: "1", target: "2", type: "default" },
 ];
 
 function Editor() {
