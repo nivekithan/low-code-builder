@@ -6,10 +6,12 @@ export type NodeMeta = {
   id: string;
 };
 
+export type ApiRequestMethod = "GET" | "POST" | "PUT" | "DELETE";
+
 export type ApiRequestNodeDef = {
   type: "apiRequest";
   data: {
-    method: "GET" | "POST" | "PUT" | "DELETE";
+    method: ApiRequestMethod;
   };
   meta: NodeMeta;
   next: NodesDef | null;
@@ -25,3 +27,8 @@ export type ApiResponseNodeDef = {
 };
 
 export type NodesDef = ApiRequestNodeDef | ApiResponseNodeDef;
+
+export type BackendProject = {
+  routes: Array<{ route: string; definition: ApiRequestNodeDef }>;
+  name: string;
+};

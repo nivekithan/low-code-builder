@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc && vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "codegen:playground": "tsx electron/lib/codegen/playground.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
@@ -28,6 +29,7 @@
     "drizzle-orm": "^0.32.1",
     "electron-trpc": "^0.6.1",
     "framer-motion": "^11.3.21",
+    "fs-extra": "^11.2.0",
     "lucide-react": "^0.428.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -45,6 +47,7 @@
     "@tanstack/router-devtools": "^1.47.1",
     "@tanstack/router-plugin": "^1.47.0",
     "@types/better-sqlite3": "^7.6.11",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.0.2",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
@@ -62,6 +65,7 @@
     "postcss": "^8.4.40",
     "shadcn-ui": "^0.8.0",
     "tailwindcss": "^3.4.7",
+    "tsx": "^4.17.0",
     "vite": "^5.1.6",
     "vite-plugin-electron": "^0.28.6",
     "vite-plugin-electron-renderer": "^0.14.5",
