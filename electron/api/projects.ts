@@ -5,7 +5,7 @@ import {
   getProject,
   listProjects,
 } from "../lib/models/projects";
-import { generateBaseProject } from "!/lib/codegen/templates/baseProject";
+import { generateBaseProject } from "!/lib/compiler/codegen/templates/baseProject";
 
 export const projectsRouter = router({
   create: procedure

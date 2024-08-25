@@ -4,7 +4,7 @@ import {
   ApiRequestNodeDef,
   ApiResponseNodeDef,
   NodesDef,
-} from "../nodes/defination";
+} from "../../nodes/defination";
 import { HONO_CONTEXT_IDEN } from "./constants";
 
 export function generateStatementsFromNodesDef(nodesDef: NodesDef) {

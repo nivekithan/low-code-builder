@@ -8,7 +8,7 @@
     "build": "tsc && vite build && electron-builder",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "codegen:playground": "tsx electron/lib/codegen/playground.ts"
+    "codegen:playground": "tsx electron/lib/compiler/codegen/playground.ts"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",

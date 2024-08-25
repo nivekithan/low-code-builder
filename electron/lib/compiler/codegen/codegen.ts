@@ -1,7 +1,7 @@
 import { outputFile } from "fs-extra";
 import path from "node:path";
 import posixPath from "node:path/posix";
-import { ApiRequestMethod, BackendProject } from "../nodes/defination";
+import { ApiRequestMethod, BackendProject } from "../../nodes/defination";
 import ts, { factory } from "typescript";
 import {
   convertApiRequestDefinitionToAst,
