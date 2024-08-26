@@ -37,7 +37,12 @@ function Component() {
   return (
     <div className="flex">
       <SideBar />
-      <Editor />
+      <div className="min-h-screen flex-1 flex flex-col">
+        <NavigationBar name={project.name} />
+        <div className="px-4 pb-4 flex-1">
+          <Editor />
+        </div>
+      </div>
     </div>
   );
 }
@@ -83,21 +88,19 @@ function Editor() {
   );
 
   return (
-    <div className="flex-1 p-4 min-h-screen">
-      <ReactFlow
-        nodes={nodes}
-        colorMode="dark"
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        nodeTypes={CustomNodeTypes}
-        fitView
-      >
-        <Background />
-        <Controls />
-      </ReactFlow>
-    </div>
+    <ReactFlow
+      nodes={nodes}
+      colorMode="dark"
+      edges={edges}
+      onNodesChange={onNodesChange}
+      onEdgesChange={onEdgesChange}
+      onConnect={onConnect}
+      nodeTypes={CustomNodeTypes}
+      fitView
+    >
+      <Background />
+      <Controls />
+    </ReactFlow>
   );
 }
 
@@ -112,6 +115,15 @@ function SideBar() {
           <Link className="text-lg">index</Link>
         </Button>
       </div>
+    </div>
+  );
+}
+
+function NavigationBar({ name }: { name: string }) {
+  return (
+    <div className="bg-background p-4 flex items-center justify-between">
+      <Heading>{name}</Heading>
+      <Button type="button">Publish</Button>
     </div>
   );
 }
