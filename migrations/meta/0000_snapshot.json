@@ -1,9 +1,69 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "34128c14-7ac5-4820-bdbf-f62ceaf92de0",
+  "id": "ad802c6f-d599-4a43-9aed-2780c7a8a6c9",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "api": {
+      "name": "api",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "project_id": {
+          "name": "project_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "route": {
+          "name": "route",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "definition": {
+          "name": "definition",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "unique_route_for_project": {
+          "name": "unique_route_for_project",
+          "columns": [
+            "project_id",
+            "route"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "api_project_id_project_id_fk": {
+          "name": "api_project_id_project_id_fk",
+          "tableFrom": "api",
+          "tableTo": "project",
+          "columnsFrom": [
+            "project_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "project": {
       "name": "project",
       "columns": {

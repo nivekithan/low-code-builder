@@ -1,5 +1,5 @@
-import type { CustomNodes, GetNodeComponent } from "@/customNodes";
 import type { Edge } from "@xyflow/react";
+import { CustomNodes, GetNodeComponent } from "common/types";
 
 export type Graph = {
   graph: WeakMap<CustomNodes, CustomNodes[]>;

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/text";
-import { CustomNodes, CustomNodeTypes } from "@/customNodes";
+import { CustomNodeTypes } from "@/customNodes";
 import { trpc } from "@/lib/trpc";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
@@ -16,6 +16,7 @@ import {
   ReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
+import type { ClientApiRoute, CustomNodes } from "common/types";
 import { useCallback, useState } from "react";
 
 export const Route = createFileRoute("/projects/$projectId")({
@@ -34,41 +35,32 @@ function Component() {
     throw navigate({ to: "/" });
   }
 
+  const apiRouteToRender = project.apiRoutes[0];
+
+  if (!apiRouteToRender) {
+    return <div>No API route to render</div>;
+  }
+
   return (
     <div className="flex">
       <SideBar />
       <div className="min-h-screen flex-1 flex flex-col">
         <NavigationBar name={project.name} />
         <div className="px-4 pb-4 flex-1">
-          <Editor />
+          <Editor
+            customNodes={apiRouteToRender.definition.customNodes}
+            edges={apiRouteToRender.definition.edges as Edge[]}
+          />
         </div>
       </div>
     </div>
   );
 }
 
-const initialNodes: CustomNodes[] = [
-  {
-    id: "1", // required
-    type: "apiRequest",
-    position: { x: 0, y: 0 }, // required
-    data: {
-      method: "GET",
-    },
-  },
-  {
-    id: "2",
-    type: "apiResponse",
-    position: { x: 0, y: 450 },
-    data: { text: "Hello World!" },
-  },
-];
-
-const initialEdges: Edge[] = [
-  { id: "1-2", source: "1", target: "2", type: "default" },
-];
-
-function Editor() {
+function Editor({
+  customNodes: initialNodes,
+  edges: initialEdges,
+}: Omit<ClientApiRoute, "route">) {
   const [nodes, setNodes] = useState(initialNodes);
 
   const [edges, setEdges] = useState(initialEdges);

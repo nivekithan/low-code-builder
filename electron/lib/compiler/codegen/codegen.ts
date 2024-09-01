@@ -21,7 +21,6 @@ export class CodeFile {
 
   async write(cwd: string) {
     const filePath = path.resolve(cwd, this.#path);
-    console.log({ codeFileCwd: filePath });
 
     await outputFile(filePath, this.#sourceCode);
   }
