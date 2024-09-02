@@ -1,7 +1,7 @@
 import { outputFile } from "fs-extra";
 import path from "node:path";
 import posixPath from "node:path/posix";
-import { ApiRequestMethod, BackendProject } from "../../nodes/defination";
+import { BackendProject } from "../parser/defination";
 import ts, { factory } from "typescript";
 import {
   convertApiRequestDefinitionToAst,
@@ -9,6 +9,7 @@ import {
 } from "./processNodeDefinition";
 import { API_ROUTES_DIR } from "./constants";
 import TOML from "smol-toml";
+import { ClientApiRequestMethod } from "common/types";
 
 export class CodeFile {
   #sourceCode: string;
@@ -57,8 +58,10 @@ export class CodeGenProject {
 }
 
 export function convertBackendProject(backendProject: BackendProject) {
-  const allRoutesWithMethods: { route: string; method: ApiRequestMethod }[] =
-    [];
+  const allRoutesWithMethods: {
+    route: string;
+    method: ClientApiRequestMethod;
+  }[] = [];
   const project = new CodeGenProject([]);
 
   for (const apiRoutes of backendProject.routes) {
@@ -140,7 +143,7 @@ function generatePackageJson(inputs: PackageJsonInputs) {
 }
 
 function generateApiRouterRegisterFile(
-  routes: { route: string; method: ApiRequestMethod }[]
+  routes: { route: string; method: ClientApiRequestMethod }[]
 ) {
   const importDeclartionStatements: ts.Statement[] = [
     // Import hono

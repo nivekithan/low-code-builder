@@ -5,10 +5,16 @@ import {
   getProject,
   listProjects,
 } from "../lib/models/projects";
-import { ClientApiRoute, CustomNodes } from "common/types";
+import {
+  ClientApiRoute,
+  CustomNodes,
+  CustomNodesSchema,
+  EdgeSchema,
+} from "common/types";
 import { Edge } from "@xyflow/react";
 import { compileApiRoute } from "!/lib/compiler/compiler";
 import { getAllApi, saveApi } from "!/lib/models/api";
+import { KNOWN_ERRORS } from "common/errors";
 
 export const projectsRouter = router({
   create: procedure
@@ -52,6 +58,40 @@ export const projectsRouter = router({
       }
 
       return { ...project, apiRoutes };
+    }),
+
+  autosaveApi: procedure
+    .input(
+      z.object({
+        route: z.string(),
+        customNodes: z.array(CustomNodesSchema),
+        edges: z.array(EdgeSchema),
+        projectId: z.number(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { customNodes, edges, projectId, route } = opts.input;
+
+      const project = await getProject(projectId);
+
+      if (!project) {
+        return { success: false, error: KNOWN_ERRORS.PROJECT_NOT_FOUND };
+      }
+
+      // TODO: Move compiling project into a queue
+      const codeProject = await compileApiRoute({
+        apiRoutes: [{ customNodes, edges, route }],
+        name: project.name,
+      });
+
+      await codeProject.write(project.path);
+
+      await saveApi({
+        apiRoute: { customNodes: customNodes, edges: edges, route: route },
+        projectId: projectId,
+      });
+
+      return { success: true };
     }),
 });
 

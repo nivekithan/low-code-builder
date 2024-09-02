@@ -1,4 +1,4 @@
-import { NodeMeta } from "../nodes/defination";
+import { NodeMeta } from "../compiler/parser/defination";
 
 export function generateEmptyMeta(): NodeMeta {
   return {

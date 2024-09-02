@@ -1,5 +1,5 @@
 import { Graph } from "../lexer/lexer";
-import { BackendProject } from "../../nodes/defination";
+import { BackendProject } from "./defination";
 
 export function parseGraph({ apiRequestNode, graph }: Graph) {
   const connectedNodes = graph.get(apiRequestNode);

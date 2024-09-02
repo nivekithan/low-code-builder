@@ -1,5 +1,5 @@
 import path from "node:path";
-import { BackendProject, NodeMeta } from "../../nodes/defination";
+import { BackendProject, NodeMeta } from "../parser/defination";
 import { convertBackendProject } from "./codegen";
 
 const EMPTY_META: NodeMeta = {

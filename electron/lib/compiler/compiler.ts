@@ -1,7 +1,7 @@
 import { ClientProject } from "common/types";
 import { tokeniseNodesAndEdges } from "./lexer/lexer";
 import { parseGraph } from "./parser/parser";
-import { BackendProject } from "../nodes/defination";
+import { BackendProject } from "./parser/defination";
 import { convertBackendProject } from "./codegen/codegen";
 
 export async function compileApiRoute(project: ClientProject) {
