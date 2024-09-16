@@ -17,7 +17,8 @@ import {
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import type { ClientApiRoute, CustomNodes } from "common/types";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import debounce from "lodash.debounce";
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: Component,
@@ -61,9 +62,44 @@ function Editor({
   customNodes: initialNodes,
   edges: initialEdges,
 }: Omit<ClientApiRoute, "route">) {
-  const [nodes, setNodes] = useState(initialNodes);
+  const { projectId } = Route.useParams();
 
+  const [nodes, setNodes] = useState(initialNodes);
   const [edges, setEdges] = useState(initialEdges);
+
+  const { mutate: autosaveApi } = trpc.projects.autosaveApi.useMutation();
+
+  const autosaveAfter300Ms = useMemo(() => {
+    return debounce(
+      ({
+        customNodes,
+        projectId,
+        edges,
+        route,
+      }: {
+        customNodes: CustomNodes[];
+        edges: Edge[];
+        projectId: number;
+        route: string;
+      }) => {
+        return autosaveApi({
+          customNodes: customNodes,
+          edges: edges,
+          projectId: projectId,
+          route: route,
+        });
+      }
+    );
+  }, [autosaveApi]);
+
+  useEffect(() => {
+    autosaveAfter300Ms({
+      customNodes: nodes,
+      edges: edges,
+      projectId: parseInt(projectId),
+      route: "__index",
+    });
+  }, [edges, nodes, projectId, autosaveAfter300Ms]);
 
   const onNodesChange: OnNodesChange<CustomNodes> = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
