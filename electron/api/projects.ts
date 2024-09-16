@@ -110,6 +110,7 @@ const initialNodes: CustomNodes[] = [
     position: { x: 0, y: 0 }, // required
     data: {
       method: "GET",
+      definedHeaders: [],
     },
   },
   {

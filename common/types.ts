@@ -16,6 +16,7 @@ export const ClientApiRequestNodeSchema = z.object({
       z.literal("PUT"),
       z.literal("DELETE"),
     ]),
+    definedHeaders: z.array(z.string()).default([]),
   }),
   id: z.string(),
   position: NodePositionSchema,
