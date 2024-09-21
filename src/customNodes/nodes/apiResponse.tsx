@@ -1,5 +1,4 @@
 import { Handle, NodeProps, Position, useReactFlow } from "@xyflow/react";
-import { GetNodeComponent } from "..";
 import {
   Card,
   CardContent,
@@ -9,6 +8,8 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { type GetNodeComponent } from "common/types";
+import { Variables } from "../components/variable";
 
 type ApiResponseNode = GetNodeComponent<"apiResponse">;
 
@@ -31,13 +32,16 @@ export function ApiResponseNode({ data, id }: NodeProps<ApiResponseNode>) {
         </CardHeader>
         <CardContent>
           <Label>Text:</Label>
-          <Input
-            type="text"
-            value={data.text}
-            onChange={(e) => {
-              updateText(e.currentTarget.value);
-            }}
-          />
+          <div className="flex gap-x-2">
+            <Input
+              type="text"
+              value={data.text}
+              onChange={(e) => {
+                updateText(e.currentTarget.value);
+              }}
+            />
+            <Variables />
+          </div>
         </CardContent>
       </Card>
     </>

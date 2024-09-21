@@ -70,7 +70,7 @@ function DefineHeaders({
 }) {
   function updateDefinedHeader(newValue: string, index: number) {
     const newDefinedHeaders = produce(data.definedHeaders, (definedHeaders) => {
-      definedHeaders[index] = newValue;
+      definedHeaders[index].value = newValue;
     });
     updateNodeData({ definedHeaders: newDefinedHeaders });
   }
@@ -84,14 +84,16 @@ function DefineHeaders({
 
   function addNewDefinedHeader() {
     const newDefinedHeaders = produce(data.definedHeaders, (definedHeaders) => {
-      definedHeaders.push("");
+      definedHeaders.push({ id: crypto.randomUUID().slice(0, 6), value: "" });
     });
 
     updateNodeData({ definedHeaders: newDefinedHeaders });
   }
 
   function removeEmptyHeaders() {
-    const newDefinedHeaders = data.definedHeaders.filter(Boolean);
+    const newDefinedHeaders = data.definedHeaders.filter(({ value }) =>
+      Boolean(value)
+    );
 
     updateNodeData({ definedHeaders: newDefinedHeaders });
   }
@@ -108,18 +110,18 @@ function DefineHeaders({
           }
         }}
       >
-        <PopoverTrigger>
+        <PopoverTrigger asChild>
           <Button type="button" className="w-full" variant="outline">
             {data.definedHeaders.length} headers
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[350px]">
           <div className="flex flex-col gap-y-2">
-            {data.definedHeaders.map((header, i) => {
+            {data.definedHeaders.map(({ id, value: header }, i) => {
               return (
-                <div className="flex gap-x-2">
+                <div className="flex gap-x-2" key={id}>
                   <Input
-                    value={header}
+                    defaultValue={header}
                     onChange={(e) => updateDefinedHeader(e.target.value, i)}
                   />
                   <Button

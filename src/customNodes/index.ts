@@ -1,6 +1,6 @@
 import { ReactNode } from "@tanstack/react-router";
-import { ApiRequestNode } from "./components/apiRequest";
-import { ApiResponseNode } from "./components/apiResponse";
+import { ApiRequestNode } from "./nodes/apiRequest";
+import { ApiResponseNode } from "./nodes/apiResponse";
 import type { CustomNodes } from "common/types";
 
 // Mapping of type to the Node component
