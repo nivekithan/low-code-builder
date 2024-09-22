@@ -7,7 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { type GetNodeComponent } from "common/types";
+import { type CustomNodes, type GetNodeComponent } from "common/types";
 import {
   Popover,
   PopoverContent,
@@ -20,10 +20,12 @@ import { LinkIcon } from "lucide-react";
 type ApiResponseNode = GetNodeComponent<"apiResponse">;
 
 export function ApiResponseNode({ data, id }: NodeProps<ApiResponseNode>) {
-  const reactflow = useReactFlow();
+  const reactflow = useReactFlow<CustomNodes, Edge>();
 
   function updateText(newText: string) {
-    reactflow.updateNodeData(id, { text: newText });
+    reactflow.updateNodeData(id, {
+      text: { type: "astExpression", value: newText },
+    });
   }
 
   return (
@@ -52,7 +54,7 @@ export function ApiResponseNode({ data, id }: NodeProps<ApiResponseNode>) {
               </PopoverTrigger>
               <PopoverContent side="right" avoidCollisions className="p-0">
                 <JavascriptEditor
-                  defaultValue={data.text}
+                  defaultValue={data.text.value}
                   onChange={(value) => updateText(value ?? "")}
                 />
               </PopoverContent>

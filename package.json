@@ -43,6 +43,7 @@
     "smol-toml": "^1.3.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "ts-clone-node": "^3.0.0",
     "typescript": "^5.2.2",
     "use-resize-observer": "^9.1.0",
     "vaul": "^0.9.1",

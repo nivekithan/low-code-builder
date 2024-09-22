@@ -1,8 +1,14 @@
 import {
+  AstExpression,
   ClientApiRequestNode,
   ClientApiResponseNode,
   NodePosition,
 } from "common/types";
+import ts from "typescript";
+
+type ConvertAstExpressionToAst<T> = {
+  [K in keyof T]: T[K] extends AstExpression ? ts.Expression : T[K];
+};
 
 export type NodeMeta = {
   position: NodePosition;
@@ -18,7 +24,7 @@ export type ApiRequestNodeDef = {
 
 export type ApiResponseNodeDef = {
   type: "apiResponse";
-  data: ClientApiResponseNode["data"];
+  data: ConvertAstExpressionToAst<ClientApiResponseNode["data"]>;
   meta: NodeMeta;
   next: null;
 };

@@ -1,5 +1,8 @@
+import { AstExpression } from "common/types";
 import { Graph } from "../lexer/lexer";
 import { BackendProject } from "./defination";
+import ts from "typescript";
+import { cloneNode } from "ts-clone-node";
 
 export function parseGraph({ apiRequestNode, graph }: Graph) {
   const connectedNodes = graph.get(apiRequestNode);
@@ -22,6 +25,7 @@ export function parseGraph({ apiRequestNode, graph }: Graph) {
     type: "apiRequest",
     data: {
       method: apiRequestNode.data.method,
+      definedHeaders: apiRequestNode.data.definedHeaders,
     },
     meta: {
       id: apiRequestNode.id,
@@ -30,7 +34,7 @@ export function parseGraph({ apiRequestNode, graph }: Graph) {
     next: {
       type: "apiResponse",
       data: {
-        text: firstNode.data.text,
+        text: generateTsExpressionFromAstExpression(firstNode.data.text),
       },
       meta: {
         id: firstNode.id,
@@ -41,4 +45,34 @@ export function parseGraph({ apiRequestNode, graph }: Graph) {
   };
 
   return definition;
+}
+
+function generateTsExpressionFromAstExpression(astExpression: AstExpression) {
+  const jsLiteral = astExpression.value;
+
+  const file = ts.createSourceFile(
+    "demo.js",
+    jsLiteral,
+    ts.ScriptTarget.ESNext,
+    true,
+    ts.ScriptKind.JS
+  );
+
+  if (file.statements.length !== 1) {
+    throw new Error(
+      "Invalid expression. JS Literal should contain only one statement"
+    );
+  }
+
+  const statement = file.statements[0];
+
+  const isExpressionStatement = ts.isExpressionStatement(statement);
+
+  if (!isExpressionStatement) {
+    throw new Error("Invalid expression. JS Literal should be an expression");
+  }
+
+  const expression = cloneNode(statement.expression);
+
+  return expression;
 }

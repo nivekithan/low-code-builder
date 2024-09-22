@@ -7,6 +7,12 @@ export const NodePositionSchema = z.object({
 
 export type NodePosition = z.infer<typeof NodePositionSchema>;
 
+export const AstExpressionSchema = z.object({
+  type: z.literal("astExpression"),
+  value: z.string(),
+});
+
+export type AstExpression = z.infer<typeof AstExpressionSchema>;
 export const ClientApiRequestNodeSchema = z.object({
   type: z.literal("apiRequest"),
   data: z.object({
@@ -30,7 +36,7 @@ export type ClientApiRequestMethod = ClientApiRequestNode["data"]["method"];
 export const ClientApiResponseNodeSchema = z.object({
   type: z.literal("apiResponse"),
   data: z.object({
-    text: z.string(),
+    text: AstExpressionSchema,
   }),
   id: z.string(),
   position: NodePositionSchema,

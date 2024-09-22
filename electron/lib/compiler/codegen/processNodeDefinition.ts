@@ -1,11 +1,11 @@
 import ts, { factory } from "typescript";
 import {
-  ApiRequestMethod,
   ApiRequestNodeDef,
   ApiResponseNodeDef,
   NodesDef,
 } from "../parser/defination";
 import { HONO_CONTEXT_IDEN } from "./constants";
+import { type ClientApiRequestMethod } from "common/types";
 
 export function generateStatementsFromNodesDef(nodesDef: NodesDef) {
   switch (nodesDef.type) {
@@ -28,7 +28,7 @@ function generateApiResponseDef(nodeDef: ApiResponseNodeDef) {
         factory.createIdentifier("text")
       ),
       undefined,
-      [factory.createStringLiteral(nodeDef.data.text)]
+      [nodeDef.data.text]
     )
   );
 }
@@ -79,7 +79,7 @@ export function getUniqueRouteDefinationName({
   route,
 }: {
   route: string;
-  method: ApiRequestMethod;
+  method: ClientApiRequestMethod;
 }) {
   return `${method}_${route.toLocaleUpperCase()}`;
 }
