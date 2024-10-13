@@ -9,7 +9,12 @@ export function JavascriptEditor(props: ComponentProps<typeof Editor>) {
       defaultLanguage="javascript"
       theme="vs-dark"
       {...props}
-      options={{ fontSize: 22, lineNumbers: "off", ...props.options }}
+      options={{
+        fontSize: 22,
+        lineNumbers: "off",
+        minimap: { enabled: false },
+        ...props.options,
+      }}
     />
   );
 }
