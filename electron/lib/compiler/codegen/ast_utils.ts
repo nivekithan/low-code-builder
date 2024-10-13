@@ -1,4 +1,4 @@
-import { factory } from "typescript";
+import ts, { factory } from "typescript";
 
 export function $importEverythingFromFile({
   filePath,
@@ -11,12 +11,44 @@ export function $importEverythingFromFile({
     undefined,
     factory.createImportClause(
       false,
-      factory.createIdentifier(importIdentifier),
-      undefined
+      undefined,
+      factory.createNamespaceImport(factory.createIdentifier(importIdentifier))
     ),
     factory.createStringLiteral(filePath),
     undefined
   );
 
   return importDeclaration;
+}
+
+/**
+ *
+ * Source code AST:
+ *
+ * ```ts
+ *
+ * const variableName = <expression>
+ *
+ * ```
+ */
+export function $constVariable(
+  variableName: string,
+  expression: ts.Expression
+) {
+  const ast = factory.createVariableStatement(
+    undefined,
+    factory.createVariableDeclarationList(
+      [
+        factory.createVariableDeclaration(
+          factory.createIdentifier(variableName),
+          undefined,
+          undefined,
+          expression
+        ),
+      ],
+      ts.NodeFlags.Const
+    )
+  );
+
+  return ast;
 }

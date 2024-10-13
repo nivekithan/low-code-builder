@@ -180,6 +180,9 @@ importers:
       eslint-plugin-react-refresh:
         specifier: ^0.4.5
         version: 0.4.9(eslint@8.57.0)
+      hono:
+        specifier: ^4.6.4
+        version: 4.6.4
       postcss:
         specifier: ^8.4.40
         version: 8.4.40
@@ -2938,6 +2941,10 @@ packages:
   helpertypes@0.0.19:
     resolution: {integrity: sha512-J00e55zffgi3yVnUp0UdbMztNkr2PnizEkOe9URNohnrNhW5X0QpegkuLpOmFQInpi93Nb8MCjQRHAiCDF42NQ==}
     engines: {node: '>=10.0.0'}
+
+  hono@4.6.4:
+    resolution: {integrity: sha512-T5WqBkTOcIQblqBKB5mpzaH/A+dSpvVe938xZJCHOmOuYfF7DSwE/9/10+BMvwSPq9N/f6LiQ38HxrZSQOsXKw==}
+    engines: {node: '>=16.9.0'}
 
   hosted-git-info@4.1.0:
     resolution: {integrity: sha512-kyCuEOWjJqZuDbRHzL8V93NzQhwIB71oFWSyzVo+KPZI+pnQPPxucdkrOZvkLRnrf5URsQM+IJ09Dw29cRALIA==}
@@ -7166,6 +7173,8 @@ snapshots:
       function-bind: 1.1.2
 
   helpertypes@0.0.19: {}
+
+  hono@4.6.4: {}
 
   hosted-git-info@4.1.0:
     dependencies:

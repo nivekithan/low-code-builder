@@ -1,3 +1,4 @@
+import { NodesDef } from "../../parser/defination";
 import { generateApiResponseDef } from "./apiResponseNodeToAst";
 
 export function generateStatementsFromNodesDef(nodesDef: NodesDef) {

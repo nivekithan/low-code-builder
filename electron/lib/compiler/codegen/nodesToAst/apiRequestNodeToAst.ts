@@ -1,9 +1,10 @@
 import ts, { factory } from "typescript";
 import { ApiRequestNodeDef } from "../../parser/defination";
-import { $importEverythingFromFile } from "../ast_utils";
+import { $constVariable, $importEverythingFromFile } from "../ast_utils";
 import { HONO_CONTEXT_IDEN, ILIB_IDEN } from "../constants";
 import { getUniqueRouteDefinationName } from "../routes";
 import { generateStatementsFromNodesDef } from "./utils";
+import { $callValidateHeaders } from "../ilib/callILib";
 
 export function convertApiRequestDefinitionToAst(
   apiDefinition: ApiRequestNodeDef,
@@ -13,6 +14,10 @@ export function convertApiRequestDefinitionToAst(
     method: apiDefinition.data.method,
     route,
   });
+
+  const nextStatements = apiDefinition.next
+    ? generateStatementsFromNodesDef(apiDefinition.next)
+    : [];
 
   const statements = [
     $importEverythingFromFile({
@@ -39,17 +44,61 @@ export function convertApiRequestDefinitionToAst(
       ],
       undefined,
       factory.createBlock(
-        $handleErrorsInAPIRoutes(
-          apiDefinition.next
-            ? generateStatementsFromNodesDef(apiDefinition.next)
-            : []
-        ),
+        $handleErrorsInAPIRoutes([
+          $generateOutputVariable(apiDefinition),
+          ...nextStatements,
+          // ),
+        ]),
         true
       )
     ),
   ];
 
   return statements;
+}
+
+/**
+ *
+ * Source CODE AST
+ *
+ * ```ts
+ * const request = { method: c.req.method, headers: ilib.validateHeaders(c, [""]) }
+ * ```
+ */
+function $generateOutputVariable(nodeDef: ApiRequestNodeDef) {
+  const varName = "request";
+
+  const ast = $constVariable(
+    varName,
+    factory.createObjectLiteralExpression(
+      [
+        factory.createPropertyAssignment(
+          factory.createIdentifier("method"),
+          factory.createPropertyAccessExpression(
+            factory.createPropertyAccessExpression(
+              factory.createIdentifier(HONO_CONTEXT_IDEN),
+              factory.createIdentifier("req")
+            ),
+            factory.createIdentifier("method")
+          )
+        ),
+        factory.createPropertyAssignment(
+          factory.createIdentifier("headers"),
+          $callValidateHeaders(
+            factory.createArrayLiteralExpression(
+              nodeDef.data.definedHeaders.map((header) => {
+                return factory.createStringLiteral(header.value);
+              }),
+              false
+            )
+          )
+        ),
+      ],
+      false
+    )
+  );
+
+  return ast;
 }
 
 /**

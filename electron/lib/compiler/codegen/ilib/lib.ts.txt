@@ -1,10 +1,20 @@
-export function validateHeaders(headers: Headers, requiredHeaders: string[]) {
+import type { Context } from "hono";
+
+export function validateHeaders(c: Context, requiredHeaders: string[]) {
+  const validatedHeaders: Record<string, string> = {};
+
   for (const header of requiredHeaders) {
-    if (!headers.has(header)) {
+    const headerValue = c.req.header(header);
+
+    if (!headerValue) {
       throw Response.json(
-        { ok: false, error: `Missing required header: ${header}` },
+        { ok: false, error: `Missing header: ${header}` },
         { status: 400 }
       );
     }
+
+    validatedHeaders[header] = headerValue;
   }
+
+  return validatedHeaders;
 }
