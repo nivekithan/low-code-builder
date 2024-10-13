@@ -66,7 +66,7 @@ export function convertApiRequestDefinitionToAst(
  * ```
  */
 function $generateOutputVariable(nodeDef: ApiRequestNodeDef) {
-  const varName = "request";
+  const varName = nodeDef.data.outputVariableName;
 
   const ast = $constVariable(
     varName,

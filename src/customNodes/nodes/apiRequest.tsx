@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { produce } from "immer";
+import { Badge } from "@/components/ui/badge";
 
 type ApiRequestNode = GetNodeComponent<"apiRequest">;
 
@@ -44,7 +45,12 @@ export function ApiRequestNode({ data, id }: NodeProps<ApiRequestNode>) {
     <>
       <Card>
         <CardHeader>
-          <CardTitle>API Request</CardTitle>
+          <CardTitle className="flex gap-x-2 items-center">
+            <span>{data.outputVariableName}</span>
+            <Badge className="text-[10px] relative top-[2px]">
+              API Request
+            </Badge>
+          </CardTitle>
           <CardDescription>
             Choose the method which the client can use
           </CardDescription>

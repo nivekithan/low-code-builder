@@ -26,6 +26,7 @@ export function parseGraph({ apiRequestNode, graph }: Graph) {
     data: {
       method: apiRequestNode.data.method,
       definedHeaders: apiRequestNode.data.definedHeaders,
+      outputVariableName: apiRequestNode.data.outputVariableName,
     },
     meta: {
       id: apiRequestNode.id,

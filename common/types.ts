@@ -25,6 +25,7 @@ export const ClientApiRequestNodeSchema = z.object({
     definedHeaders: z
       .array(z.object({ id: z.string(), value: z.string() }))
       .default([]),
+    outputVariableName: z.string().default("request"),
   }),
   id: z.string(),
   position: NodePositionSchema,
