@@ -3,14 +3,12 @@ import path from "node:path";
 import posixPath from "node:path/posix";
 import { BackendProject } from "../parser/defination";
 import ts, { factory } from "typescript";
-import {
-  convertApiRequestDefinitionToAst,
-  getUniqueRouteDefinationName,
-} from "./processNodeDefinition";
 import { API_ROUTES_DIR } from "./constants";
 import TOML from "smol-toml";
 import { ClientApiRequestMethod } from "common/types";
 import iLibSourceCode from "./ilib/lib.ts.txt?raw";
+import { convertApiRequestDefinitionToAst } from "./nodesToAst/apiRequestNodeToAst";
+import { getUniqueRouteDefinationName } from "./routes";
 
 export class CodeFile {
   #sourceCode: string;
