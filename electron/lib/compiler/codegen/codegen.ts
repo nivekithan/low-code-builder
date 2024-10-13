@@ -10,6 +10,7 @@ import {
 import { API_ROUTES_DIR } from "./constants";
 import TOML from "smol-toml";
 import { ClientApiRequestMethod } from "common/types";
+import iLibSourceCode from "./ilib/lib.ts.txt?raw";
 
 export class CodeFile {
   #sourceCode: string;
@@ -107,6 +108,10 @@ export function convertBackendProject(backendProject: BackendProject) {
 
   project.addFile(wranglerTomlFile);
 
+  const ilibFile = generateILibFile();
+
+  project.addFile(ilibFile);
+
   return project;
 }
 
@@ -114,6 +119,7 @@ type WranglerTomlInputs = {
   name: string;
   compatibility_date: string;
 };
+
 function generateWranglerTomlFile(inputs: WranglerTomlInputs) {
   const sourceCode = TOML.stringify(inputs);
 
@@ -132,6 +138,10 @@ type PackageJsonInputs = {
   dependencies: Record<string, string>;
   devDependencies: Record<string, string>;
 };
+
+function generateILibFile() {
+  return new CodeFile({ path: "ilib.ts", sourceCode: iLibSourceCode });
+}
 
 function generatePackageJson(inputs: PackageJsonInputs) {
   const sourceCode = JSON.stringify(inputs, null, 2);

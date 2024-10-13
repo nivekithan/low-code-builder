@@ -1,0 +1,10 @@
+export function validateHeaders(headers: Headers, requiredHeaders: string[]) {
+  for (const header of requiredHeaders) {
+    if (!headers.has(header)) {
+      throw Response.json(
+        { ok: false, error: `Missing required header: ${header}` },
+        { status: 400 }
+      );
+    }
+  }
+}
