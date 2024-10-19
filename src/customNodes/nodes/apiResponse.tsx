@@ -1,13 +1,13 @@
 import { Handle, NodeProps, Position, useReactFlow } from "@xyflow/react";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  FixedCard,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { type CustomNodes, type GetNodeComponent } from "common/types";
+import type { Edge, GetNodeComponent, CustomNodes } from "common/types";
 import {
   Popover,
   PopoverContent,
@@ -31,7 +31,7 @@ export function ApiResponseNode({ data, id }: NodeProps<ApiResponseNode>) {
   return (
     <>
       <Handle type="target" position={Position.Top} />
-      <Card>
+      <FixedCard>
         <CardHeader>
           <CardTitle>API Response</CardTitle>
           <CardDescription>
@@ -61,7 +61,7 @@ export function ApiResponseNode({ data, id }: NodeProps<ApiResponseNode>) {
             </Popover>
           </div>
         </CardContent>
-      </Card>
+      </FixedCard>
     </>
   );
 }

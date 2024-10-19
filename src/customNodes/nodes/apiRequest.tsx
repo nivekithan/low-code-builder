@@ -1,10 +1,10 @@
 import { Handle, NodeProps, Position, useReactFlow } from "@xyflow/react";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  FixedCard,
 } from "@/components/ui/card";
 import {
   Select,
@@ -26,6 +26,7 @@ import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { produce } from "immer";
 import { Badge } from "@/components/ui/badge";
+import { OutputVariableNameEditor } from "../components/outputVariableNameEditor";
 
 type ApiRequestNode = GetNodeComponent<"apiRequest">;
 
@@ -41,15 +42,14 @@ export function ApiRequestNode({ data, id }: NodeProps<ApiRequestNode>) {
   function updateNodeData(data: Partial<ApiRequestNode["data"]>) {
     reactflow.updateNodeData(id, data);
   }
+
   return (
     <>
-      <Card>
+      <FixedCard>
         <CardHeader>
-          <CardTitle className="flex gap-x-2 items-center">
-            <span>{data.outputVariableName}</span>
-            <Badge className="text-[10px] relative top-[2px]">
-              API Request
-            </Badge>
+          <Badge className="text-[10px] self-start">API Request</Badge>
+          <CardTitle>
+            <OutputVariableNameEditor nodeId={id} />
           </CardTitle>
           <CardDescription>
             Choose the method which the client can use
@@ -62,7 +62,7 @@ export function ApiRequestNode({ data, id }: NodeProps<ApiRequestNode>) {
           </Fieldset>
         </CardContent>
         <Handle type="source" position={Position.Bottom} />
-      </Card>
+      </FixedCard>
     </>
   );
 }
