@@ -7,11 +7,11 @@ import {
 } from "../lib/models/projects";
 import {
   ClientApiRoute,
+  CustomEdges,
   CustomNodes,
   CustomNodesSchema,
   EdgeSchema,
 } from "common/types";
-import { Edge } from "@xyflow/react";
 import { compileApiRoute } from "!/lib/compiler/compiler";
 import { getAllApi, saveApi } from "!/lib/models/api";
 import { KNOWN_ERRORS } from "common/errors";
@@ -111,16 +111,17 @@ const initialNodes: CustomNodes[] = [
     data: {
       method: "GET",
       definedHeaders: [],
+      outputVariableName: "request",
     },
   },
   {
     id: "2",
     type: "apiResponse",
     position: { x: 0, y: 450 },
-    data: { text: "Hello World!" },
+    data: { text: { type: "astExpression", value: `"Hello World!"` } },
   },
 ];
 
-const initialEdges: Edge[] = [
-  { id: "1-2", source: "1", target: "2", type: "default" },
+const initialEdges: CustomEdges[] = [
+  { id: "1-2", source: "1", target: "2", type: "simple" },
 ];

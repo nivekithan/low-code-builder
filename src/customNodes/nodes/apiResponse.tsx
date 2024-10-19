@@ -7,7 +7,7 @@ import {
   FixedCard,
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import type { Edge, GetNodeComponent, CustomNodes } from "common/types";
+import type { CustomEdges, GetNodeComponent, CustomNodes } from "common/types";
 import {
   Popover,
   PopoverContent,
@@ -20,7 +20,7 @@ import { LinkIcon } from "lucide-react";
 type ApiResponseNode = GetNodeComponent<"apiResponse">;
 
 export function ApiResponseNode({ data, id }: NodeProps<ApiResponseNode>) {
-  const reactflow = useReactFlow<CustomNodes, Edge>();
+  const reactflow = useReactFlow<CustomNodes, CustomEdges>();
 
   function updateText(newText: string) {
     reactflow.updateNodeData(id, {

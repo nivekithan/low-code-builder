@@ -54,9 +54,10 @@ export const EdgeSchema = z.object({
   source: z.string(),
   target: z.string(),
   id: z.string(),
+  type: z.literal("simple").default("simple"),
 });
 
-export type Edge = z.infer<typeof EdgeSchema>;
+export type CustomEdges = z.infer<typeof EdgeSchema>;
 
 export type CustomNodes = z.infer<typeof CustomNodesSchema>;
 
@@ -66,7 +67,7 @@ export type GetNodeComponent<T extends CustomNodes["type"]> =
 
 export type ClientApiRoute = {
   customNodes: CustomNodes[];
-  edges: Edge[];
+  edges: CustomEdges[];
   route: string;
 };
 

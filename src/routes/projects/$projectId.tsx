@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Heading } from "@/components/ui/text";
-import { CustomNodeTypes } from "@/customNodes";
+import { CustomEdgeTypes, CustomNodeTypes } from "@/customNodes";
 import { trpc } from "@/lib/trpc";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import {
@@ -9,14 +9,13 @@ import {
   applyNodeChanges,
   Background,
   Controls,
-  Edge,
   OnConnect,
   OnEdgesChange,
   OnNodesChange,
   ReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import type { ClientApiRoute, CustomNodes } from "common/types";
+import type { ClientApiRoute, CustomEdges, CustomNodes } from "common/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
 
@@ -50,7 +49,7 @@ function Component() {
         <div className="px-4 pb-4 flex-1">
           <Editor
             customNodes={apiRouteToRender.definition.customNodes}
-            edges={apiRouteToRender.definition.edges as Edge[]}
+            edges={apiRouteToRender.definition.edges}
           />
         </div>
       </div>
@@ -78,7 +77,7 @@ function Editor({
         route,
       }: {
         customNodes: CustomNodes[];
-        edges: Edge[];
+        edges: CustomEdges[];
         projectId: number;
         route: string;
       }) => {
@@ -105,13 +104,17 @@ function Editor({
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
     []
   );
-  const onEdgesChange: OnEdgesChange<Edge> = useCallback(
+  const onEdgesChange: OnEdgesChange<CustomEdges> = useCallback(
     (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
     []
   );
 
   const onConnect: OnConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params) =>
+      setEdges((eds) => {
+        const customEdge = { ...eds, type: "simple" as const };
+        return addEdge(params, customEdge);
+      }),
     []
   );
 
@@ -124,6 +127,7 @@ function Editor({
       onEdgesChange={onEdgesChange}
       onConnect={onConnect}
       nodeTypes={CustomNodeTypes}
+      edgeTypes={CustomEdgeTypes}
       fitView
     >
       <Background />
