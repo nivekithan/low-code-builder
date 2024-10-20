@@ -155,7 +155,9 @@ function NavigationBar({ name }: { name: string }) {
   return (
     <div className="bg-background p-4 flex items-center justify-between">
       <Heading>{name}</Heading>
-      <Button type="button">Publish</Button>
+      <div className="flex gap-x-2">
+        <Button type="button">Publish</Button>
+      </div>
     </div>
   );
 }
