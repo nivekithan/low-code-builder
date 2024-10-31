@@ -18,6 +18,7 @@ import "@xyflow/react/dist/style.css";
 import type { ClientApiRoute, CustomEdges, CustomNodes } from "common/types";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import debounce from "lodash.debounce";
+import useAutoLayout from "@/features/autolayout/useAutoLayout";
 
 export const Route = createFileRoute("/projects/$projectId")({
   component: Component,
@@ -117,6 +118,8 @@ function Editor({
       }),
     []
   );
+
+  useAutoLayout();
 
   return (
     <ReactFlow
