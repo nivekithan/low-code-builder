@@ -27,6 +27,7 @@ import { X } from "lucide-react";
 import { produce } from "immer";
 import { Badge } from "@/components/ui/badge";
 import { OutputVariableNameEditor } from "../components/outputVariableNameEditor";
+import { AddChildrenNodes } from "../components/addChildrenNodes";
 
 type ApiRequestNode = GetNodeComponent<"apiRequest">;
 
@@ -45,24 +46,27 @@ export function ApiRequestNode({ data, id }: NodeProps<ApiRequestNode>) {
 
   return (
     <>
-      <FixedCard>
-        <CardHeader>
-          <Badge className="text-[10px] self-start">API Request</Badge>
-          <CardTitle>
-            <OutputVariableNameEditor nodeId={id} />
-          </CardTitle>
-          <CardDescription>
-            Choose the method which the client can use
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Fieldset>
-            <SelectMethod data={data} updateNodeData={updateNodeData} />
-            <DefineHeaders data={data} updateNodeData={updateNodeData} />
-          </Fieldset>
-        </CardContent>
-        <Handle type="source" position={Position.Bottom} />
-      </FixedCard>
+      <div className="relative">
+        <FixedCard>
+          <CardHeader>
+            <Badge className="text-[10px] self-start">API Request</Badge>
+            <CardTitle>
+              <OutputVariableNameEditor nodeId={id} />
+            </CardTitle>
+            <CardDescription>
+              Choose the method which the client can use
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Fieldset>
+              <SelectMethod data={data} updateNodeData={updateNodeData} />
+              <DefineHeaders data={data} updateNodeData={updateNodeData} />
+            </Fieldset>
+          </CardContent>
+          <Handle type="source" position={Position.Bottom} hidden />
+        </FixedCard>
+        <AddChildrenNodes />
+      </div>
     </>
   );
 }

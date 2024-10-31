@@ -7,7 +7,7 @@ export function layoutAlgorithm(nodes: Node[], edges: Edge[]) {
   dagreGraph.setGraph({
     rankdir: "TB",
     nodesep: 100,
-    ranksep: 50,
+    ranksep: 60,
   });
 
   // first, we remove all nodes from the dagre graph

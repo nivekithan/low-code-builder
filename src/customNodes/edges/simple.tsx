@@ -16,7 +16,7 @@ export function SimpleEdge({
 
   return (
     <>
-      <BaseEdge id={id} path={edgePath} />
+      <BaseEdge id={id} path={edgePath} style={{ display: "none" }} />
     </>
   );
 }
