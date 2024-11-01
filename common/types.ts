@@ -45,9 +45,24 @@ export const ClientApiResponseNodeSchema = z.object({
 
 export type ClientApiResponseNode = z.infer<typeof ClientApiResponseNodeSchema>;
 
+export const ClientIfAndElseConditionNodeSchema = z.object({
+  type: z.literal("ifAndElseCondition"),
+  data: z.object({
+    condition: AstExpressionSchema,
+    outputVariableName: z.string().default("condition"),
+  }),
+  id: z.string(),
+  position: NodePositionSchema,
+});
+
+export type CLientIfElseConditionNode = z.infer<
+  typeof ClientIfAndElseConditionNodeSchema
+>;
+
 export const CustomNodesSchema = z.discriminatedUnion("type", [
   ClientApiRequestNodeSchema,
   ClientApiResponseNodeSchema,
+  ClientIfAndElseConditionNodeSchema,
 ]);
 
 export const EdgeSchema = z.object({

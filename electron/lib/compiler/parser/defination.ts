@@ -2,6 +2,7 @@ import {
   AstExpression,
   ClientApiRequestNode,
   ClientApiResponseNode,
+  CLientIfElseConditionNode,
   NodePosition,
 } from "common/types";
 import ts from "typescript";
@@ -22,6 +23,15 @@ export type ApiRequestNodeDef = {
   next: NodesDef | null;
 };
 
+export type IfElseConditionNodeDef = {
+  type: "ifElseCondition";
+  data: ConvertAstExpressionToAst<CLientIfElseConditionNode["data"]>;
+  meta: NodeMeta;
+  onTrue: NodesDef | null;
+  onFalse: NodesDef | null;
+  commonToBoth: NodesDef | null;
+};
+
 export type ApiResponseNodeDef = {
   type: "apiResponse";
   data: ConvertAstExpressionToAst<ClientApiResponseNode["data"]>;
@@ -29,7 +39,10 @@ export type ApiResponseNodeDef = {
   next: null;
 };
 
-export type NodesDef = ApiRequestNodeDef | ApiResponseNodeDef;
+export type NodesDef =
+  | ApiRequestNodeDef
+  | ApiResponseNodeDef
+  | IfElseConditionNodeDef;
 
 export type BackendProject = {
   routes: Array<{ route: string; definition: ApiRequestNodeDef }>;

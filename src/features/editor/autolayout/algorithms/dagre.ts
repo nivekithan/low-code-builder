@@ -3,7 +3,7 @@ import { Edge, Node } from "@xyflow/react";
 
 const dagreGraph = new dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 
-export function layoutAlgorithm(nodes: Node[], edges: Edge[]) {
+export async function layoutAlgorithm(nodes: Node[], edges: Edge[]) {
   dagreGraph.setGraph({
     rankdir: "TB",
     nodesep: 100,

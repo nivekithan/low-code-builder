@@ -25,9 +25,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { X } from "lucide-react";
 import { produce } from "immer";
-import { Badge } from "@/components/ui/badge";
 import { OutputVariableNameEditor } from "../components/outputVariableNameEditor";
 import { AddChildrenNodes } from "../components/addChildrenNodes";
+import { BadgeName } from "../components/badgeName";
 
 type ApiRequestNode = GetNodeComponent<"apiRequest">;
 
@@ -49,7 +49,7 @@ export function ApiRequestNode({ data, id }: NodeProps<ApiRequestNode>) {
       <div className="relative">
         <FixedCard>
           <CardHeader>
-            <Badge className="text-[10px] self-start">API Request</Badge>
+            <BadgeName>API Request</BadgeName>
             <CardTitle>
               <OutputVariableNameEditor nodeId={id} />
             </CardTitle>
@@ -65,7 +65,7 @@ export function ApiRequestNode({ data, id }: NodeProps<ApiRequestNode>) {
           </CardContent>
           <Handle type="source" position={Position.Bottom} hidden />
         </FixedCard>
-        <AddChildrenNodes />
+        <AddChildrenNodes nodeId={id} />
       </div>
     </>
   );

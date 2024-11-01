@@ -8,14 +8,7 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import type { CustomEdges, GetNodeComponent, CustomNodes } from "common/types";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { JavascriptEditor } from "../components/JavascriptEditor";
-import { LinkIcon } from "lucide-react";
+import { JavascriptEditorInput } from "../components/JavascriptEditor";
 
 type ApiResponseNode = GetNodeComponent<"apiResponse">;
 
@@ -40,26 +33,10 @@ export function ApiResponseNode({ data, id }: NodeProps<ApiResponseNode>) {
         </CardHeader>
         <CardContent>
           <Label>Text:</Label>
-          <div className="flex gap-x-2">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  type="button"
-                  className="w-full flex gap-x-2"
-                  variant="outline"
-                >
-                  <LinkIcon size={14} />
-                  Editor
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent side="right" avoidCollisions className="p-0">
-                <JavascriptEditor
-                  defaultValue={data.text.value}
-                  onChange={(value) => updateText(value ?? "")}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+          <JavascriptEditorInput
+            defaultValue={data.text.value}
+            onChange={(value) => updateText(value ?? "")}
+          />
         </CardContent>
       </FixedCard>
     </>

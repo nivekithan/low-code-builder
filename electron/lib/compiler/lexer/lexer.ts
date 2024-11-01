@@ -10,6 +10,7 @@ export function tokeniseNodesAndEdges(
   customNodes: CustomNodes[],
   edges: Edge[]
 ): Graph {
+  console.log({ customNodes, edges });
   const graph = new WeakMap<CustomNodes, CustomNodes[]>();
 
   const customNodesMap = processCustomNodes(customNodes);
@@ -45,6 +46,8 @@ export function tokeniseNodesAndEdges(
 
     graph.set(sourceNode, currentEdges);
   }
+
+  console.log({ apiRequestNode });
 
   if (!apiRequestNode) {
     throw new Error("No API request node found");
