@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { AddChildrenNodes } from "../components/addChildrenNodes";
 import { Button } from "@/components/ui/button";
 import { XIcon } from "lucide-react";
+import { useModifyNodes } from "@/features/editor/modifyNodes";
 
 type IfAndElseConditionNode = GetNodeComponent<"ifAndElseCondition">;
 
@@ -27,6 +28,8 @@ export function IfAndElseConditionNode({
   function updateCondition(data: Partial<IfAndElseConditionNode["data"]>) {
     reactflow.updateNodeData(id, data);
   }
+
+  const { removeNodes } = useModifyNodes();
 
   return (
     <>
@@ -41,6 +44,7 @@ export function IfAndElseConditionNode({
                 size="xl"
                 type="button"
                 className="rounded-full size-7"
+                onClick={() => removeNodes(id)}
               >
                 <XIcon className="w-3 h-3" />
               </Button>
