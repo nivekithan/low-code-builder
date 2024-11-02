@@ -52,3 +52,15 @@ export function $constVariable(
 
   return ast;
 }
+
+export function $ifElseCondition(
+  variableName: string,
+  ifStatement: ts.Statement[],
+  elseStatement: ts.Statement[]
+) {
+  return factory.createIfStatement(
+    factory.createIdentifier(variableName),
+    factory.createBlock(ifStatement, true),
+    factory.createBlock(elseStatement, true)
+  );
+}

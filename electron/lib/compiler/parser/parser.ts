@@ -3,6 +3,7 @@ import { Graph } from "../lexer/lexer";
 import { BackendProject, NodesDef } from "./defination";
 import ts from "typescript";
 import { cloneNode } from "ts-clone-node";
+import { getNodesBasedOnEdge } from "./utils";
 
 export function parseGraph({ apiRequestNode, graph }: Graph) {
   const connectedNodes = graph.get(apiRequestNode);
@@ -15,7 +16,7 @@ export function parseGraph({ apiRequestNode, graph }: Graph) {
     throw new Error("Multiple connected nodes found");
   }
 
-  const processedNodes = processNodes(connectedNodes[0], graph);
+  const processedNodes = processNodes(connectedNodes[0].node, graph);
 
   const definition: BackendProject["routes"][number]["definition"] = {
     type: "apiRequest",
@@ -34,10 +35,7 @@ export function parseGraph({ apiRequestNode, graph }: Graph) {
   return definition;
 }
 
-function processNodes(
-  node: CustomNodes,
-  graph: WeakMap<CustomNodes, CustomNodes[]>
-): NodesDef {
+function processNodes(node: CustomNodes, graph: Graph["graph"]): NodesDef {
   if (node.type === "apiRequest") {
     throw new Error(`API Request node cannot be processed`);
   }
@@ -49,19 +47,27 @@ function processNodes(
       throw new Error("No connected nodes found");
     }
 
-    if (connectedNodes.length !== 1) {
-      throw new Error(
-        `Invalid connected nodes found: ${connectedNodes.length}`
-      );
+    if (connectedNodes.length > 2) {
+      throw new Error("Invalid number of connected nodes for ifElseCondition");
     }
 
-    const nextNode = connectedNodes[0];
+    const nodesBasedOnEdge = getNodesBasedOnEdge(
+      {
+        onTrue: "ifElseCondition-onTrue",
+        onFalse: "ifElseCondition-onFalse",
+      },
+      connectedNodes
+    );
 
-    const processedNode = processNodes(nextNode, graph);
+    const onTrueNodeDef = nodesBasedOnEdge.onTrue
+      ? processNodes(nodesBasedOnEdge.onTrue, graph)
+      : null;
+    const onFalseNodeDef = nodesBasedOnEdge.onFalse
+      ? processNodes(nodesBasedOnEdge.onFalse, graph)
+      : null;
 
     return {
       type: "ifElseCondition",
-      commonToBoth: processedNode,
       data: {
         condition: generateTsExpressionFromAstExpression(node.data.condition),
         outputVariableName: node.data.outputVariableName,
@@ -70,8 +76,8 @@ function processNodes(
         id: node.id,
         position: node.position,
       },
-      onFalse: null,
-      onTrue: null,
+      onFalse: onFalseNodeDef,
+      onTrue: onTrueNodeDef,
     };
   } else if (node.type === "apiResponse") {
     return {

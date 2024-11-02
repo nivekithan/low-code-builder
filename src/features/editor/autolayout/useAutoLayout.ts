@@ -51,7 +51,6 @@ function useAutoLayout() {
         edge.style = { ...edge.style, opacity: 1 };
       }
 
-      console.log("Running layout", nextNodes, nextEdges);
       setNodes(nextNodes);
       setEdges(nextEdges);
     };

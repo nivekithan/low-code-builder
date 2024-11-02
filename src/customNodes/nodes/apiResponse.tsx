@@ -23,7 +23,7 @@ export function ApiResponseNode({ data, id }: NodeProps<ApiResponseNode>) {
 
   return (
     <>
-      <Handle type="target" position={Position.Top} hidden />
+      <Handle type="target" position={Position.Top} />
       <FixedCard>
         <CardHeader>
           <CardTitle>API Response</CardTitle>

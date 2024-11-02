@@ -17,15 +17,20 @@ export function AddChildrenNodes({ nodeId }: { nodeId: string }) {
   const { insertNodes } = useModifyNodes();
 
   function addIfElseCondition() {
-    insertNodes(nodeId, {
-      type: "ifAndElseCondition",
-      data: {
-        condition: { type: "astExpression", value: "false" },
-        outputVariableName: "condition",
+    insertNodes({
+      parentBlockId: nodeId,
+      newNode: {
+        type: "ifAndElseCondition",
+        data: {
+          condition: { type: "astExpression", value: "false" },
+          outputVariableName: "condition",
+        },
+        id: randomNodeId(),
+        position: { x: 0, y: 0 },
+        style: { opacity: 0 },
       },
-      id: randomNodeId(),
-      position: { x: 0, y: 0 },
-      style: { opacity: 0 },
+      upEdgeType: "default",
+      downEdgeType: "ifElseCondition-onTrue",
     });
     setIsSheetOpen(false);
   }

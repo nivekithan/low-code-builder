@@ -1,6 +1,6 @@
 import { randomEdgeId } from "@/lib/utils";
 import { useReactFlow, type Node, type Edge } from "@xyflow/react";
-import type { CustomEdges, CustomNodes } from "common/types";
+import type { CustomEdges, CustomEdgeType, CustomNodes } from "common/types";
 import { produce } from "immer";
 import { useCallback, useMemo } from "react";
 
@@ -11,7 +11,17 @@ export function useModifyNodes() {
   >();
 
   const insertNodes = useCallback(
-    (parentBlockId: string, newNode: CustomNodes & Node) => {
+    ({
+      newNode,
+      parentBlockId,
+      upEdgeType,
+      downEdgeType,
+    }: {
+      parentBlockId: string;
+      newNode: CustomNodes & Node;
+      upEdgeType: CustomEdgeType | "default";
+      downEdgeType: CustomEdgeType;
+    }) => {
       const parentNode = getNode(parentBlockId);
 
       if (!parentNode) {
@@ -39,12 +49,15 @@ export function useModifyNodes() {
           const oldTarget = edgeWhoseSourceIsParent.target;
 
           edgeWhoseSourceIsParent.target = newNode.id;
+          if (upEdgeType !== "default") {
+            edgeWhoseSourceIsParent.type = upEdgeType;
+          }
 
           edges.push({
             id: randomEdgeId(),
             source: newNode.id,
             target: oldTarget,
-            type: "simple",
+            type: downEdgeType,
           });
         });
 

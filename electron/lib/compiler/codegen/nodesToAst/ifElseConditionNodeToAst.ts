@@ -1,5 +1,5 @@
 import { IfElseConditionNodeDef } from "../../parser/defination";
-import { $constVariable } from "../ast_utils";
+import { $constVariable, $ifElseCondition } from "../ast_utils";
 import { generateStatementsFromNodesDef } from "./utils";
 
 export function generateIfElseConditionNodeToAst(
@@ -10,9 +10,18 @@ export function generateIfElseConditionNodeToAst(
     nodeDef.data.condition
   );
 
-  const otherStatements = nodeDef.commonToBoth
-    ? generateStatementsFromNodesDef(nodeDef.commonToBoth)
+  const ifStatements = nodeDef.onTrue
+    ? generateStatementsFromNodesDef(nodeDef.onTrue)
+    : [];
+  const elseStatements = nodeDef.onFalse
+    ? generateStatementsFromNodesDef(nodeDef.onFalse)
     : [];
 
-  return [conditionStatement, ...otherStatements];
+  const ifElseConditionBlock = $ifElseCondition(
+    nodeDef.data.outputVariableName,
+    ifStatements,
+    elseStatements
+  );
+
+  return [conditionStatement, ifElseConditionBlock];
 }

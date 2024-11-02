@@ -35,7 +35,7 @@ export function IfAndElseConditionNode({
     <>
       <div className="relative">
         <FixedCard>
-          <Handle type="target" position={Position.Top} hidden />
+          <Handle type="target" position={Position.Top} />
           <CardHeader>
             <div className="flex justify-between items-center">
               <BadgeName>If/Else Condition</BadgeName>
@@ -72,7 +72,7 @@ export function IfAndElseConditionNode({
               </Field>
             </Fieldset>
           </CardContent>
-          <Handle type="source" position={Position.Bottom} hidden />
+          <Handle type="source" position={Position.Bottom} />
         </FixedCard>
         <AddChildrenNodes nodeId={id} />
       </div>

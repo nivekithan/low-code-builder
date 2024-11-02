@@ -1,17 +1,18 @@
-import type { Edge } from "@xyflow/react";
-import { CustomNodes, GetNodeComponent } from "common/types";
+import type { CustomEdges, CustomNodes, GetNodeComponent } from "common/types";
 
 export type Graph = {
-  graph: WeakMap<CustomNodes, CustomNodes[]>;
+  graph: WeakMap<CustomNodes, { node: CustomNodes; edge: CustomEdges }[]>;
   apiRequestNode: GetNodeComponent<"apiRequest">;
 };
 
 export function tokeniseNodesAndEdges(
   customNodes: CustomNodes[],
-  edges: Edge[]
+  edges: CustomEdges[]
 ): Graph {
-  console.log({ customNodes, edges });
-  const graph = new WeakMap<CustomNodes, CustomNodes[]>();
+  const graph = new WeakMap<
+    CustomNodes,
+    { node: CustomNodes; edge: CustomEdges }[]
+  >();
 
   const customNodesMap = processCustomNodes(customNodes);
   let apiRequestNode: GetNodeComponent<"apiRequest"> | null = null;
@@ -42,12 +43,10 @@ export function tokeniseNodesAndEdges(
 
     const currentEdges = graph.get(sourceNode) || [];
 
-    currentEdges.push(targetNode);
+    currentEdges.push({ node: targetNode, edge: edge });
 
     graph.set(sourceNode, currentEdges);
   }
-
-  console.log({ apiRequestNode });
 
   if (!apiRequestNode) {
     throw new Error("No API request node found");

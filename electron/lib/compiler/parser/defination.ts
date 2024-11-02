@@ -29,7 +29,6 @@ export type IfElseConditionNodeDef = {
   meta: NodeMeta;
   onTrue: NodesDef | null;
   onFalse: NodesDef | null;
-  commonToBoth: NodesDef | null;
 };
 
 export type ApiResponseNodeDef = {

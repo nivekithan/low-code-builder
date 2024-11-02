@@ -22,7 +22,7 @@ export const elkLayoutAlgorithm: LayoutAlgorithm = async (nodes, edges) => {
     layoutOptions: {
       "elk.algorithm": "mrtree",
       "elk.direction": getDirection("TB"),
-      "elk.spacing.nodeNode": `${30}`,
+      "elk.spacing.nodeNode": `${50}`,
     },
     children: nodes.map((node) => ({
       id: node.id,

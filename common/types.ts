@@ -69,10 +69,17 @@ export const EdgeSchema = z.object({
   source: z.string(),
   target: z.string(),
   id: z.string(),
-  type: z.literal("simple").default("simple"),
+  type: z
+    .union([
+      z.literal("simple"),
+      z.literal("ifElseCondition-onTrue"),
+      z.literal("ifElseCondition-onFalse"),
+    ])
+    .default("simple"),
 });
 
 export type CustomEdges = z.infer<typeof EdgeSchema>;
+export type CustomEdgeType = CustomEdges["type"];
 
 export type CustomNodes = z.infer<typeof CustomNodesSchema>;
 
